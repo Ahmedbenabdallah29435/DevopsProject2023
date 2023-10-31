@@ -5,6 +5,7 @@ import tn.esprit.spring.entities.TypeSubscription;
 
 import java.util.List;
 
+//Rayen
 public interface ISkierServices {
 
 	List<Skier> retrieveAllSkiers();
