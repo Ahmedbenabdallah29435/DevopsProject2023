@@ -62,7 +62,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<finalName>springprojet</finalName>
+					<finalName>gestion-station-ski</finalName>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -97,6 +97,6 @@
 			</plugin>
 
 		</plugins>
-		<finalName>springprojet</finalName>
+		<finalName>gestion-station-ski</finalName>
 	</build>
 </project>
