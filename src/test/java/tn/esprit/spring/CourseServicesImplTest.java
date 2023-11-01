@@ -22,20 +22,20 @@ public class CourseServicesImplTest {
 
 
     @Test
-    @Order(2)
+
     public void testRetrieveAllCourses() {
 
         Course course = new Course();
         course.setLevel(1);
         course.setTypeCourse(TypeCourse.COLLECTIVE_ADULT);
         course.setSupport(Support.SKI);
-        course.setPrice(50.0f);
+        course.setPrice(50f);
         course.setTimeSlot(2);
-        courseRepository.save(course);
+        courseServices.addCourse(course);
 
         // Appelez la méthode pour récupérer tous les cours
         List<Course> listCourses = courseServices.retrieveAllCourses();
-
+               System.out.println(course);
         // Vérifiez si la liste de cours retournée n'est pas nulle
         assertNotNull(listCourses);
 
