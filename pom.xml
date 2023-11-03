@@ -89,5 +89,13 @@
 			</plugin>
 		</plugins>
 	</build>
+	<!-- Deploy to Nexus -->
+	<distributionManagement>
+		<repository>
+			<id>deploymentSkier</id>
+			<name>Nexus Skier Repository</name>
+			<url>http://localhost:8081/repository/maven-releases/</url>
+		</repository>
+	</distributionManagement>
 
 </project>
