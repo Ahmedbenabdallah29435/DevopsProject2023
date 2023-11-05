@@ -41,7 +41,6 @@ public class PisteServiceTest {
         piste.setSlope(10);
         pisteService.addPiste(piste);
 
-        when(pisteService.addPiste(piste)).thenReturn(piste);
 
         // Appelez la méthode pour récupérer tous les cours
         List<Piste> listPistes = pisteService.retrieveAllPistes();
