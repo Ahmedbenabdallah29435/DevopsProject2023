@@ -19,6 +19,7 @@ import java.util.List;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
+@RunWith(MockitoJUnitRunner.class)
 
 public class PisteServiceTest {
     @InjectMocks
