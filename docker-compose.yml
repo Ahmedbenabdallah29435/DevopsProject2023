@@ -1,0 +1,34 @@
+version: "3.8"
+services:
+  mysqldb:
+    image: mysql:5.7
+    restart: unless-stopped
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "3306:3306"
+    volumes:
+      - db:/var/lib/mysql
+
+  gestion-station-ski:
+    depends_on:
+      - mysqldb
+    image: dhaouadi1515/gestion-station-ski:latest
+    restart: on-failure
+    environment:
+      SPRING_APPLICATION_JSON: '{
+                 "spring.datasource.url"  : "jdbc:mysql://localhost:3306/stationSki?createDatabaseIfNotExist=true",
+                 "spring.datasource.username" : "root",
+                 "spring.datasource.password" : "root",
+                 "spring.jpa.show-sql" : "true",
+                 "spring.jpa.hibernate.ddl-auto" : "update",
+                 "spring.jpa.properties.hibernate.dialect": "org.hibernate.dialect.MySQL5InnoDBDialect"
+               }'
+    ports:
+      - "8089:8089"
+    stdin_open: true
+    tty: true
+
+
+volumes:
+  db:
