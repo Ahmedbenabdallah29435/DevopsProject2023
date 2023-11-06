@@ -19,10 +19,7 @@ public class CourseServicesImplTest {
     @Mock
     ICourseRepository  courseRepository;
 
-
-
     @Test
-
     public void testRetrieveAllCourses() {
 
         Course course = new Course();
@@ -39,9 +36,7 @@ public class CourseServicesImplTest {
         // Vérifiez si la liste de cours retournée n'est pas nulle
         assertNotNull(listCourses);
 
-
-
-
         }
+
     }
 
