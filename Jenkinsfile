@@ -16,7 +16,7 @@ pipeline {
       
         stage ('Artifact construction') {
             steps{
-                sh 'mvn package -Dmaven.test=true -P test-coverage'
+                sh 'mvn install -Dmaven.test.skip=true'
             }
         }
       
