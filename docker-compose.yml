@@ -13,7 +13,7 @@ services:
   gestion-station-ski:
     depends_on:
       - mysqldb
-    image: khalilkr/gestion-station-ski:latest
+    image: dhaouadi1515/gestion-station-ski:latest
     restart: on-failure
     environment:
       SPRING_APPLICATION_JSON: '{
