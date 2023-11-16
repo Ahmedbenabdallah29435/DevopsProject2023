@@ -19,6 +19,12 @@ pipeline {
                 sh 'mvn install -Dmaven.test.skip=true'
             }
         }
+
+        stage('Run Mockito Tests') {
+                            steps {
+                                sh 'mvn test'
+                            }
+                        }
       
         stage('SonarQube Analysis') {
              steps {
@@ -26,10 +32,6 @@ pipeline {
                    }
              }
 
-        stage('Run Mockito Tests') {
-                    steps {
-                        sh 'mvn test'
-                    }
-                }
+
     }
 }
