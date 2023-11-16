@@ -70,6 +70,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+<finalName>SkiStationProject-0.0.1</finalName>
 	</build>
 
 </project>
