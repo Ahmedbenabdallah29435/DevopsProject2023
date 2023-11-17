@@ -12,6 +12,8 @@ import tn.esprit.spring.repositories.ICourseRepository;
 import tn.esprit.spring.services.CourseServicesImpl;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 @SpringBootTest
 public class CourseServicesImplTest {
     @InjectMocks
@@ -37,6 +39,29 @@ public class CourseServicesImplTest {
         assertNotNull(listCourses);
 
         }
+
+    @Test
+    public void testAddCourse() {
+        // Création d'une instance de Course à sauvegarder
+        Course courseToSave = new Course();
+        courseToSave.setLevel(1);
+        courseToSave.setTypeCourse(TypeCourse.COLLECTIVE_ADULT);
+        courseToSave.setSupport(Support.SKI);
+        courseToSave.setPrice(50f);
+        courseToSave.setTimeSlot(2);
+        // Configurer le comportement du repository mock pour retourner le cours sauvegardé
+        when(courseRepository.save(courseToSave)).thenReturn(courseToSave);
+
+        // Appel de la méthode à tester
+        Course savedCourse = courseServices.addCourse(courseToSave);
+
+        // Vérifier si la méthode save a été appelée une fois avec le cours à sauvegarder
+        verify(courseRepository, times(1)).save(courseToSave);
+
+        // Vérifier si le cours retourné est celui qui a été sauvegardé
+        assertEquals(courseToSave.getNumCourse(), savedCourse.getNumCourse());
+        assertEquals(courseToSave.getTypeCourse(), savedCourse.getTypeCourse());
+    }
 
     }
 
