@@ -11,6 +11,8 @@ import tn.esprit.spring.entities.TypeCourse;
 import tn.esprit.spring.repositories.ICourseRepository;
 import tn.esprit.spring.services.CourseServicesImpl;
 import java.util.List;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -81,6 +83,32 @@ public class CourseServicesImplTest {
         // Vérifier si le cours retourné est celui qui a été mis à jour
         assertEquals(courseToUpdate.getNumCourse(), updatedCourse.getNumCourse());
         assertEquals(courseToUpdate.getPrice(), updatedCourse.getPrice());
+    }
+    @Test
+    public void testRetrieveCourse() {
+        // Création d'un identifiant de cours factice pour simuler la recherche
+        Long courseId = 1L;
+
+        // Création d'un cours factice pour simuler le retour du repository
+        Course course = new Course();
+        course.setNumCourse(courseId);
+        // Ajoutez les propriétés nécessaires pour votre test
+        // ...
+
+        // Configurer le comportement du repository mock pour retourner le cours factice lorsqu'on lui passe l'ID factice
+        when(courseRepository.findById(courseId)).thenReturn(Optional.of(course));
+
+        // Appel de la méthode à tester
+        Course retrievedCourse = courseServices.retrieveCourse(courseId);
+
+        // Vérifier si la méthode findById a été appelée une fois avec l'ID du cours
+        verify(courseRepository, times(1)).findById(courseId);
+
+        // Vérifier si le cours retourné est celui qui a été simulé
+        assertNotNull(retrievedCourse);
+        assertEquals(courseId, retrievedCourse.getNumCourse());
+        // Ajoutez d'autres assertions pour vérifier les propriétés du cours si nécessaire
+        // ...
     }
     }
 
