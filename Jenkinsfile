@@ -1,6 +1,9 @@
 pipeline {
     agent any
-   
+
+    environment {
+        SONAR_MDP = credentials('123456')
+       }
     stages {
         stage('GIT') {
             steps {
@@ -10,7 +13,7 @@ pipeline {
 
         stage('Cleaning the project') {
             steps{
-                sh 'mvn clean'
+                sh 'mvn clean compile'
             }
         }
       
@@ -28,9 +31,16 @@ pipeline {
       
         stage('SonarQube Analysis') {
              steps {
-                    sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar'
+                    sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=${SONAR_MDP}'
                    }
              }
+
+        stage('Deploy') {
+             steps {
+                    sh 'mvn deploy -DskipTests=true'
+                   }
+             }
+
 
 
     }
