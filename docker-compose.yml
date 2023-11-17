@@ -1,12 +1,12 @@
 version: "3.8"
 services:
-  mysqldb:
+  mysqldb :
     image: mysql:5.7
     restart: unless-stopped
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - db:/var/lib/mysql
 
@@ -17,7 +17,7 @@ services:
     restart: on-failure
     environment:
       SPRING_APPLICATION_JSON: '{
-                 "spring.datasource.url"  : "jdbc:mysql://mysqldb:3306/stationSki?createDatabaseIfNotExist=true",
+                 "spring.datasource.url"  : "jdbc:mysql://mysqldb :3306/stationSki?createDatabaseIfNotExist=true",
                  "spring.datasource.username" : "root",
                  "spring.jpa.show-sql" : "true",
                  "spring.jpa.hibernate.ddl-auto" : "update",
