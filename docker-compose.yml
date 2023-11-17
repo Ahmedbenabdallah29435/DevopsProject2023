@@ -3,7 +3,7 @@ services:
   gestion-station-ski:
     depends_on:
       - mysqldb
-    image: docker23440/ahmedbenabdallah-5sae4-g3-ski:v40
+    image: docker23440/ahmedbenabdallah-5sae4-g3-ski:v46
     restart: on-failure
     environment:
       SPRING_APPLICATION_JSON: '{
