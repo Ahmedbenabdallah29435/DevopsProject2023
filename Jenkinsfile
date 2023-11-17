@@ -60,6 +60,7 @@ environment {
 
         stage('Run Spring and MySQL Containers') {
              steps {
+                    sh "docker login -u docker23440 -p Docker23440"
                     sh 'docker compose up -d'
                     echo 'Run Spring && MySQL Containers'
                    }
