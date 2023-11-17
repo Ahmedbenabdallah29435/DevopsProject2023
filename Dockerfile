@@ -1,9 +1,4 @@
-FROM adoptopenjdk/openjdk11:alpine-jre
-# Add the necessary database driver (e.g., MySQL)
-
-
-
-
-ADD target/SkiStationProject-0.0.1.jar SkiStationProject-0.0.1.jar
-ENTRYPOINT ["java", "-jar","SkiStationProject-0.0.1.jar"]
-EXPOSE 8090
+FROM openjdk:11-jdk
+EXPOSE 8089
+ADD target/gestion-station-ski-1.0.jar gestion-station-ski-1.0.jar
+ENTRYPOINT ["java","-jar","/gestion-station-ski-1.0.jar"]

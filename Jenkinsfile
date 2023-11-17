@@ -3,6 +3,8 @@ pipeline {
 
 environment {
     SONAR_MDP = 'sonar'
+    DOCKER_IMAGE_NAME = 'AhmedBenAbdallah-5Sae4-g3-ski'
+    DOCKER_IMAGE_TAG = "v${BUILD_NUMBER}" // Using Jenkins BUILD_NUMBER as the tag
 }
     stages {
         stage('GIT') {
@@ -23,11 +25,11 @@ environment {
             }
         }
 
-        stage('Run Mockito Tests') {
-                            steps {
-                                sh 'mvn test'
-                            }
-                        }
+        stage('Run Unit Tests') {
+            steps {
+            sh 'mvn test'
+            }
+        }
       
         stage('SonarQube Analysis') {
              steps {
@@ -35,13 +37,26 @@ environment {
                    }
              }
 
-        stage('Deploy') {
+        stage('Deploy to Nexus') {
              steps {
                     sh 'mvn deploy -DskipTests=true'
                    }
              }
 
+        stage('building docker image') {
+             steps {
+                     sh 'docker build -t $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG -f Dockerfile ./'
+                   }
+             }
 
+        stage('dockerhub') {
+             steps {
+
+                    sh "docker login -u docker23440 -p docker23440"
+                    sh "docker tag $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG docker23440/AhmedBenAbdallah-5Sae4-g3-ski:$DOCKER_IMAGE_TAG"
+                    sh "docker push  docker23440/AhmedBenAbdallah-5Sae4-g3-ski:$DOCKER_IMAGE_TAG"
+                   }
+             }
 
     }
 }
