@@ -58,5 +58,13 @@ environment {
                    }
              }
 
+        stage('Run Spring and MySQL Containers') {
+             steps {
+                    sh 'docker compose up -d'
+                    echo 'Run Spring && MySQL Containers'
+                   }
+             }
+        }
+
     }
 }
