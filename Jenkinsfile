@@ -3,7 +3,7 @@ pipeline {
 
 environment {
     SONAR_MDP = 'sonar'
-    DOCKER_IMAGE_NAME = 'AhmedBenAbdallah-5Sae4-g3-ski'
+    DOCKER_IMAGE_NAME = 'ahmedBenAbdallah-5Sae4-g3-ski'
     DOCKER_IMAGE_TAG = "v${BUILD_NUMBER}" // Using Jenkins BUILD_NUMBER as the tag
 }
     stages {
@@ -53,8 +53,8 @@ environment {
              steps {
 
                     sh "docker login -u docker23440 -p docker23440"
-                    sh "docker tag $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG docker23440/AhmedBenAbdallah-5Sae4-g3-ski:$DOCKER_IMAGE_TAG"
-                    sh "docker push  docker23440/AhmedBenAbdallah-5Sae4-g3-ski:$DOCKER_IMAGE_TAG"
+                    sh "docker tag $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG docker23440/ahmedBenAbdallah-5Sae4-g3-ski:$DOCKER_IMAGE_TAG"
+                    sh "docker push  docker23440/ahmedBenAbdallah-5Sae4-g3-ski:$DOCKER_IMAGE_TAG"
                    }
              }
 
