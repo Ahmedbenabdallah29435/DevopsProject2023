@@ -2,7 +2,7 @@ pipeline {
     agent any
 
 environment {
-    SONAR_MDP = credentials('123456')
+    SONAR_MDP = sonar
 }
     stages {
         stage('GIT') {
