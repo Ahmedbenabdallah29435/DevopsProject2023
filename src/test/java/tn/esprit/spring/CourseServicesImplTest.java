@@ -62,6 +62,25 @@ public class CourseServicesImplTest {
         assertEquals(courseToSave.getNumCourse(), savedCourse.getNumCourse());
         assertEquals(courseToSave.getTypeCourse(), savedCourse.getTypeCourse());
     }
+    @Test
+    public void testUpdateCourse() {
+        // Création d'une instance de Course à mettre à jour
+        Course courseToUpdate = new Course();
+        courseToUpdate.setNumCourse(1L);
+        courseToUpdate.setTypeCourse(TypeCourse.COLLECTIVE_ADULT);
 
+        // Configurer le comportement du repository mock pour retourner le cours mis à jour
+        when(courseRepository.save(courseToUpdate)).thenReturn(courseToUpdate);
+
+        // Appel de la méthode à tester
+        Course updatedCourse = courseServices.updateCourse(courseToUpdate);
+
+        // Vérifier si la méthode save a été appelée une fois avec le cours à mettre à jour
+        verify(courseRepository, times(1)).save(courseToUpdate);
+
+        // Vérifier si le cours retourné est celui qui a été mis à jour
+        assertEquals(courseToUpdate.getNumCourse(), updatedCourse.getNumCourse());
+        assertEquals(courseToUpdate.getPrice(), updatedCourse.getPrice());
+    }
     }
 
