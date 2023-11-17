@@ -64,7 +64,6 @@ environment {
                     echo 'Run Spring && MySQL Containers'
                    }
              }
-        }
-
     }
 }
+
