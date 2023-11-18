@@ -65,6 +65,20 @@ environment {
                     echo 'Run Spring && MySQL Containers'
                    }
              }
+
+        stage('Notify mail to my email') {
+             steps {
+               script {
+               def testResults = currentBuild.result ?: 'SUCCESS' // Default to 'SUCCESS' if result is null
+               emailext subject: "Tests Status - ${testResults}",
+                    body: "The tests are complete. Result: ${testResults}",
+                    to: 'benabdallah.ahmed@esprit.tn',
+                    replyTo: 'benabdallah.ahmed@esprit.tn'
+               }
+             }
+
+        }
+
     }
 }
 
