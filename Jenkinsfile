@@ -69,22 +69,26 @@ environment {
         stage('Notify mail to my email') {
             steps {
                 script {
-                    def testResults = currentBuild.result ?: 'SUCCESS' // Default to 'SUCCESS' if result is null
+                    def testResults = currentBuild.result ?: 'UNKNOWN' // Default to 'SUCCESS' if result is null
 
+                    if (currentBuild.result == 'SUCCESS') {
+                        // Override testResults if the build result is FAILURE
+                        testResults = 'SUCCESS✅'
+                    } 
                     if (currentBuild.result == 'FAILURE') {
                         // Override testResults if the build result is FAILURE
-                        testResults = 'FAILURE'
+                        testResults = 'FAILURE❌'
                     }
 
                     emailext subject: "Tests Status - ${testResults}",
                             body: """
                                 <html>
                                     <body>
-                                        <p>The tests are complete. Result: ${testResults}<br/>
-                                        Job: ${env.JOB_NAME}<br/>
+                                        <p>The tests are complete. Result: ${testResults}</p><br/>
+                                        <p>Job: ${env.JOB_NAME}<br/>
                                         More Info can be found here: ${env.BUILD_URL}</p><br/>
-                                        <p>🔍 ✅ 🔍 ❌</p><br/>
-                                        <p><i>This is an auto-generated email. Please don't reply.<br/>
+                                        <p>🔍 ✅ 🔍 ❌<br/>
+                                        <i>This is an auto-generated email. Please don't reply.<br/>
                                         Cordially.</i></p>
                                     </body>
                                 </html>
