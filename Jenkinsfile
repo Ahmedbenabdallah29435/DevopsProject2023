@@ -65,25 +65,20 @@ environment {
                     echo 'Run Spring && MySQL Containers'
                    }
              }
+        }
+    post {
+        always {
+                    script {
+                        // Set the build result based on some condition
+                        if (currentBuild.resultIsBetterOrEqualTo('FAILURE')) {
+                            currentBuild.result = 'FAILURE'
+                        } else {
+                            currentBuild.result = 'SUCCESS'
+                        }
 
-        stage('Notify mail to my email') {
-            steps {
-                script {
-                    def testResults = currentBuild.result ?: 'UNKNOWN' // Default to 'SUCCESS' if result is null
+                        def testResults = currentBuild.result ?: 'UNKNOWN'
 
-
-                    echo "currentBuild.result: ${currentBuild.result}"
-                    echo "testResults: ${testResults}"
-                    if (currentBuild.result == 'SUCCESS') {
-                        // Override testResults if the build result is FAILURE
-                        testResults = 'SUCCESS✅'
-                    } 
-                    if (currentBuild.result == 'FAILURE') {
-                        // Override testResults if the build result is FAILURE
-                        testResults = 'FAILURE❌'
-                    }
-
-                    emailext subject: "Tests Status - ${testResults}",
+                        emailext subject: "Tests Status - ${testResults}",
                             body: """
                                 <html>
                                     <body>
@@ -99,10 +94,7 @@ environment {
                             to: 'benabdallah.ahmed@esprit.tn',
                             replyTo: 'benabdallah.ahmed@esprit.tn',
                             contentType: 'text/html'
-                }
-            }
+                    }
         }
-
     }
 }
-
