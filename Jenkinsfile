@@ -82,7 +82,8 @@ environment {
                                     <body>
                                         <p>The tests are complete. Result: ${testResults}<br/>
                                         Job: ${env.JOB_NAME}<br/>
-                                        More Info can be found here: ${env.BUILD_URL}</p>
+                                        More Info can be found here: ${env.BUILD_URL}</p><br/>
+                                        <p>🔍 ✅ 🔍 ❌</p><br/>
                                         <p><i>This is an auto-generated email. Please don't reply.<br/>
                                         Cordially.</i></p>
                                     </body>
