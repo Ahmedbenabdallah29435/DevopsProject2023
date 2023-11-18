@@ -67,16 +67,21 @@ environment {
              }
 
         stage('Notify mail to my email') {
-             steps {
-               script {
-               def testResults = currentBuild.result ?: 'SUCCESS' // Default to 'SUCCESS' if result is null
-               emailext subject: "Tests Status - ${testResults}",
-                    body: "The tests are complete. Result: ${testResults}",
-                    to: 'benabdallah.ahmed@esprit.tn',
-                    replyTo: 'benabdallah.ahmed@esprit.tn'
-               }
-             }
+            steps {
+                script {
+                    def testResults = currentBuild.result ?: 'SUCCESS' // Default to 'SUCCESS' if result is null
 
+                    if (currentBuild.result == 'FAILURE') {
+                        // Override testResults if the build result is FAILURE
+                        testResults = 'FAILURE'
+                    }
+
+                    emailext subject: "Tests Status - ${testResults}",
+                            body: "The tests are complete. Result: ${testResults}\nJob: ${env.JOB_NAME}\nMore Info can be found here: ${env.BUILD_URL}\n\nThis is an auto-generated email. Please don't reply.\nCordially.",
+                            to: 'benabdallah.ahmed@esprit.tn',
+                            replyTo: 'benabdallah.ahmed@esprit.tn'
+                }
+            }
         }
 
     }
