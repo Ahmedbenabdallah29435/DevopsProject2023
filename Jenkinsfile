@@ -69,6 +69,7 @@ environment {
     post {
         success {
             script {
+                def testResults = currentBuild.result ?: 'SUCCESS' // Default to 'SUCCESS' if result is null
                 emailext body: """
                     <html>
                         <body>
@@ -89,6 +90,7 @@ environment {
         }
         failure {
             script {
+                def testResults = currentBuild.result ?: 'FAILURE' // Default to 'FAILURE' if result is null
                 emailext body: """
                     <html>
                         <body>
@@ -109,7 +111,12 @@ environment {
         }
         always {
             // Additional actions to be taken regardless of the build result
-             echo "This will run always, regardless of the build result."
+            script {
+                def testResults = currentBuild.result ?: 'UNKNOWN' // Default to 'UNKNOWN' if result is null
+                echo "This will run always, regardless of the build result."
+                echo "testResults: ${testResults}"
+            }
         }
     }
+
 }
