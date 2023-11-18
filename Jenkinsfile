@@ -77,9 +77,20 @@ environment {
                     }
 
                     emailext subject: "Tests Status - ${testResults}",
-                            body: "The tests are complete. Result: ${testResults}\nJob: ${env.JOB_NAME}\nMore Info can be found here: ${env.BUILD_URL}\n\nThis is an auto-generated email. Please don't reply.\nCordially.",
+                            body: """
+                                <html>
+                                    <body>
+                                        <p>The tests are complete. Result: ${testResults}<br/>
+                                        Job: ${env.JOB_NAME}<br/>
+                                        More Info can be found here: ${env.BUILD_URL}</p>
+                                        <p><i>This is an auto-generated email. Please don't reply.<br/>
+                                        Cordially.</i></p>
+                                    </body>
+                                </html>
+                            """,
                             to: 'benabdallah.ahmed@esprit.tn',
-                            replyTo: 'benabdallah.ahmed@esprit.tn'
+                            replyTo: 'benabdallah.ahmed@esprit.tn',
+                            contentType: 'text/html'
                 }
             }
         }
