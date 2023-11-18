@@ -90,7 +90,7 @@ environment {
         }
         failure {
             script {
-                def testResults = currentBuild.result ?: 'FAILURE❌' // Default to 'FAILURE' if result is null
+                def testResults = currentBuild.result ?: 'FAILURE' // Default to 'FAILURE' if result is null
                 emailext body: """
                     <html>
                         <body>
@@ -103,7 +103,7 @@ environment {
                         </body>
                     </html>
                     """,
-                    subject: "Tests Status - ${testResults}",
+                    subject: "Tests Status - ${testResults}❌",
                     to: 'benabdallah.ahmed@esprit.tn',
                     replyTo: 'benabdallah.ahmed@esprit.tn',
                     mimeType: 'text/html'
