@@ -67,34 +67,49 @@ environment {
              }
         }
     post {
+        success {
+            script {
+                emailext body: """
+                    <html>
+                        <body>
+                            <p>The tests are complete. Result: ${testResults}✅✅</p><br/>
+                            <p>Job: ${env.JOB_NAME}<br/>
+                            More Info can be found here: ${env.BUILD_URL}</p><br/>
+                            <p>🔍 ✅ 🔍 ❌<br/>
+                            <i>This is an auto-generated email. Please don't reply.<br/>
+                            Cordially.</i></p>
+                        </body>
+                    </html>
+                    """,
+                    subject: "Tests Status - ${testResults}",
+                    to: 'benabdallah.ahmed@esprit.tn',
+                    replyTo: 'benabdallah.ahmed@esprit.tn',
+                    mimeType: 'text/html'
+            }
+        }
+        failure {
+            script {
+                emailext body: """
+                    <html>
+                        <body>
+                            <p>The tests are complete. Result: ${testResults}❌❌</p><br/>
+                            <p>Job: ${env.JOB_NAME}<br/>
+                            More Info can be found here: ${env.BUILD_URL}</p><br/>
+                            <p>🔍 ✅ 🔍 ❌<br/>
+                            <i>This is an auto-generated email. Please don't reply.<br/>
+                            Cordially.</i></p>
+                        </body>
+                    </html>
+                    """,
+                    subject: "Tests Status - ${testResults}",
+                    to: 'benabdallah.ahmed@esprit.tn',
+                    replyTo: 'benabdallah.ahmed@esprit.tn',
+                    mimeType: 'text/html'
+            }
+        }
         always {
-                    script {
-                        // Set the build result based on some condition
-                        if (currentBuild.resultIsBetterOrEqualTo('FAILURE')) {
-                            currentBuild.result = 'FAILURE'
-                        } else {
-                            currentBuild.result = 'SUCCESS'
-                        }
-
-                        def testResults = currentBuild.result ?: 'UNKNOWN'
-
-                        emailext subject: "Tests Status - ${testResults}",
-                            body: """
-                                <html>
-                                    <body>
-                                        <p>The tests are complete. Result: ${testResults}</p><br/>
-                                        <p>Job: ${env.JOB_NAME}<br/>
-                                        More Info can be found here: ${env.BUILD_URL}</p><br/>
-                                        <p>🔍 ✅ 🔍 ❌<br/>
-                                        <i>This is an auto-generated email. Please don't reply.<br/>
-                                        Cordially.</i></p>
-                                    </body>
-                                </html>
-                            """,
-                            to: 'benabdallah.ahmed@esprit.tn',
-                            replyTo: 'benabdallah.ahmed@esprit.tn',
-                            contentType: 'text/html'
-                    }
+            // Additional actions to be taken regardless of the build result
+             echo "This will run always, regardless of the build result."
         }
     }
 }
