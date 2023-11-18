@@ -103,4 +103,9 @@ public class RegistrationServicesImpl implements  IRegistrationServices{
         return registrationRepository.numWeeksCourseOfInstructorBySupport(numInstructor, support);
     }
 
+    @Override
+    public Registration addRegistration(Registration registration) {
+        return registrationRepository.save(registration);
+    }
+
 }

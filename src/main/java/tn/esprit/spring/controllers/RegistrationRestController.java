@@ -19,6 +19,14 @@ import java.util.List;
 public class RegistrationRestController {
     private final IRegistrationServices registrationServices;
 
+    @Operation(description = "Add Registration")
+    @PostMapping("/add")
+    public Registration addRegistration(@RequestBody Registration registration)
+    {
+        return registrationServices.addRegistration(registration);
+    }
+
+
     @Operation(description = "Add Registration and Assign to Skier")
     @PutMapping("/addAndAssignToSkier/{numSkieur}")
     public Registration addAndAssignToSkier(@RequestBody Registration registration,
