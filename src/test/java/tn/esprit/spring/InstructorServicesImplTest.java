@@ -46,7 +46,6 @@ public class InstructorServicesImplTest {
         assertNotNull(savedInstructor);
         verify(instructorRepository).save(instructor);
 
-        // Vous pouvez ajouter des assertions supplémentaires ici en fonction de votre cas d'utilisation
     }
 
     @Test
@@ -59,7 +58,6 @@ public class InstructorServicesImplTest {
         assertTrue(retrievedInstructors.isEmpty());
         verify(instructorRepository).findAll();
 
-        // Vous pouvez ajouter des assertions supplémentaires ici en fonction de votre cas d'utilisation
     }
 
     @Test
@@ -71,7 +69,6 @@ public class InstructorServicesImplTest {
         assertNotNull(updatedInstructor);
         verify(instructorRepository).save(instructor);
 
-        // Vous pouvez ajouter des assertions supplémentaires ici en fonction de votre cas d'utilisation
     }
 
     @Test
@@ -84,7 +81,6 @@ public class InstructorServicesImplTest {
         assertNotNull(retrievedInstructor);
         verify(instructorRepository).findById(numInstructor);
 
-        // Vous pouvez ajouter des assertions supplémentaires ici en fonction de votre cas d'utilisation
     }
 
     @Test
@@ -101,6 +97,5 @@ public class InstructorServicesImplTest {
         verify(courseRepository).findById(numCourse);
         verify(instructorRepository).save(instructor);
 
-        // Vous pouvez ajouter des assertions supplémentaires ici en fonction de votre cas d'utilisation
     }
 }
