@@ -5,6 +5,8 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,6 +43,7 @@ public class InstructorServicesImplTest {
         when(instructorRepository.save(instructor)).thenReturn(instructor);
 
         Instructor savedInstructor = instructorService.addInstructor(instructor);
+        assertNotNull(savedInstructor);
         verify(instructorRepository).save(instructor);
 
         // Vous pouvez ajouter des assertions supplémentaires ici en fonction de votre cas d'utilisation
@@ -52,6 +55,8 @@ public class InstructorServicesImplTest {
         when(instructorRepository.findAll()).thenReturn(instructors);
 
         List<Instructor> retrievedInstructors = instructorService.retrieveAllInstructors();
+        assertNotNull(retrievedInstructors);
+        assertTrue(retrievedInstructors.isEmpty());
         verify(instructorRepository).findAll();
 
         // Vous pouvez ajouter des assertions supplémentaires ici en fonction de votre cas d'utilisation
@@ -63,6 +68,7 @@ public class InstructorServicesImplTest {
         when(instructorRepository.save(instructor)).thenReturn(instructor);
 
         Instructor updatedInstructor = instructorService.updateInstructor(instructor);
+        assertNotNull(updatedInstructor);
         verify(instructorRepository).save(instructor);
 
         // Vous pouvez ajouter des assertions supplémentaires ici en fonction de votre cas d'utilisation
@@ -75,6 +81,7 @@ public class InstructorServicesImplTest {
         when(instructorRepository.findById(numInstructor)).thenReturn(Optional.of(instructor));
 
         Instructor retrievedInstructor = instructorService.retrieveInstructor(numInstructor);
+        assertNotNull(retrievedInstructor);
         verify(instructorRepository).findById(numInstructor);
 
         // Vous pouvez ajouter des assertions supplémentaires ici en fonction de votre cas d'utilisation
@@ -89,6 +96,8 @@ public class InstructorServicesImplTest {
         when(instructorRepository.save(instructor)).thenReturn(instructor);
 
         Instructor savedInstructor = instructorService.addInstructorAndAssignToCourse(instructor, numCourse);
+        assertNotNull(savedInstructor);
+        assertTrue(savedInstructor.getCourses().contains(course));
         verify(courseRepository).findById(numCourse);
         verify(instructorRepository).save(instructor);
 
