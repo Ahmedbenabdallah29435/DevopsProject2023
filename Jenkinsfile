@@ -71,6 +71,9 @@ environment {
                 script {
                     def testResults = currentBuild.result ?: 'UNKNOWN' // Default to 'SUCCESS' if result is null
 
+
+                    echo "currentBuild.result: ${currentBuild.result}"
+                    echo "testResults: ${testResults}"
                     if (currentBuild.result == 'SUCCESS') {
                         // Override testResults if the build result is FAILURE
                         testResults = 'SUCCESS✅'
