@@ -68,7 +68,9 @@ environment {
         }
     post {
         success {
+            echo "Preparing to send email..."
             script {
+                echo "Preparing to send1 email..."
                 def testResults = currentBuild.result ?: 'SUCCESS' // Default to 'SUCCESS' if result is null
                 emailext body: """
                     <html>
