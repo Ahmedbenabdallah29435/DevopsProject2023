@@ -85,8 +85,8 @@ environment {
                     </html>
                     """,
                     subject: "Tests Status - ${testResults}✅",
-                    to: 'b.abdallahahmed2351323@gmail.com',
-                    replyTo: 'b.abdallahahmed2351323@gmail.com',
+                    to: 'benabdallah.ahmed@esprit.tn',
+                    replyTo: 'benabdallah.ahmed@esprit.tn',
                     mimeType: 'text/html'
             }
         }
@@ -106,8 +106,8 @@ environment {
                     </html>
                     """,
                     subject: "Tests Status - ${testResults}❌",
-                    to: 'b.abdallahahmed2351323@gmail.com',
-                    replyTo: 'b.abdallahahmed2351323@gmail.com',
+                    to: 'benabdallah.ahmed@esprit.tn',
+                    replyTo: 'benabdallah.ahmed@esprit.tn',
                     mimeType: 'text/html'
             }
         }
