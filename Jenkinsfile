@@ -7,26 +7,6 @@ environment {
     DOCKER_IMAGE_TAG = "v${BUILD_NUMBER}" // Using Jenkins BUILD_NUMBER as the tag
 }
     stages {
-        stage('Send Test Email') {
-            steps {
-                script {
-                    emailext body: """
-                        <html>
-                            <body>
-                                <p>This is a test email from Jenkins.</p>
-                                <p>Job: ${env.JOB_NAME}<br/>
-                                Build URL: ${env.BUILD_URL}</p>
-                            </body>
-                        </html>
-                        """,
-                        subject: "Test Email from Jenkins",
-                        to: 'benabdallah.ahmed@esprit.tn',
-                        replyTo: 'benabdallah.ahmed@esprit.tn',
-                        mimeType: 'text/html'
-                }
-            }
-        }
-    
         stage('GIT') {
             steps {
                 checkout scm
