@@ -75,25 +75,13 @@ pipeline {
 
     post {
         success {
-            echo "Preparing to send email..."
+            echo "Build succeeded. Preparing to send email..."
             script {
-                // Parse test results
-                def testResults = currentBuild.rawBuild.getAction(hudson.tasks.junit.TestResultAction.class)
-                def totalTests = testResults?.totalCount ?: 0
-                def failedTests = testResults?.failCount ?: 0
-                def passedTests = totalTests - failedTests
-
-                // Fetch coverage from SonarQube
-                def sonarUrl = "${SONAR_URL}/api/measures/component?component=${SONAR_PROJECT_KEY}&metricKeys=coverage"
-                def coverageResponse = sh(script: "curl -u ${SONAR_AUTH_TOKEN}: ${sonarUrl}", returnStdout: true).trim()
-                def coverageJson = readJSON text: coverageResponse
-                def coverage = coverageJson?.component?.measures?.find { it.metric == 'coverage' }?.value ?: 'N/A'
-
-                // Send email with dynamic values
+                // Sending the email without trying to access non-permitted methods
                 emailext body: """
                     <html>
                         <body>
-                            <h2>Build and Test Summary ✅✅</h2>
+                            <h2>Build and Test Summary</h2>
                             <p>Dear Team,</p>
                             <p>The Jenkins build <b>${env.JOB_NAME}</b> has successfully completed with the following details:</p>
                             <h3>Build Details:</h3>
@@ -103,13 +91,6 @@ pipeline {
                                 <li><b>SonarQube Analysis:</b> Completed</li>
                                 <li><b>Docker Image:</b> ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}</li>
                                 <li><b>Deployment:</b> Successfully deployed to Nexus and Dockerhub</li>
-                            </ul>
-                            <h3>Test Results:</h3>
-                            <ul>
-                                <li><b>Total Tests Run:</b> ${totalTests}</li>
-                                <li><b>Tests Passed:</b> ${passedTests}</li>
-                                <li><b>Tests Failed:</b> ${failedTests}</li>
-                                <li><b>Test Coverage:</b> ${coverage}%</li>
                             </ul>
                             <h3>Additional Information:</h3>
                             <ul>
@@ -131,29 +112,22 @@ pipeline {
         }
         failure {
             script {
-                def testResults = currentBuild.result ?: 'FAILURE' // Default to 'FAILURE' if result is null
                 emailext body: """
                     <html>
                         <body>
-                            <h2>Build and Test Summary ❌❌</h2>
+                            <h2>Build and Test Summary</h2>
                             <p>Dear Team,</p>
-                            <p>The Jenkins build <b>${env.JOB_NAME}</b> has failed with the following details:</p>
+                            <p>The Jenkins build <b>${env.JOB_NAME}</b> has failed.</p>
                             <h3>Build Details:</h3>
                             <ul>
                                 <li><b>Build Number:</b> ${env.BUILD_NUMBER}</li>
-                                <li><b>Build Status:</b> ${testResults}</li>
+                                <li><b>Build Status:</b> FAILURE</li>
                                 <li><b>Failed Stage:</b> ${env.STAGE_NAME}</li>
                             </ul>
                             <h3>Error Details:</h3>
                             <ul>
                                 <li><b>Error Message:</b> Please refer to the Jenkins console output for detailed logs.</li>
                                 <li><b>SonarQube Analysis:</b> Failed or Incomplete</li>
-                            </ul>
-                            <h3>Recommended Actions:</h3>
-                            <ul>
-                                <li>Check the console output for specific error messages.</li>
-                                <li>Review the SonarQube analysis report for potential issues.</li>
-                                <li>Ensure all dependencies are correctly configured.</li>
                             </ul>
                             <p>For more details, please check the Jenkins job at: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
                             <p><i>This is an auto-generated email. Please do not reply.<br/>
@@ -168,11 +142,7 @@ pipeline {
             }
         }
         always {
-            script {
-                def testResults = currentBuild.result ?: 'UNKNOWN' // Default to 'UNKNOWN' if result is null
-                echo "This will run always, regardless of the build result."
-                echo "Test Results: ${testResults}"
-            }
+            echo "This will run always, regardless of the build result."
         }
     }
 }
