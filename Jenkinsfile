@@ -5,6 +5,11 @@ pipeline {
         SONAR_MDP = 'sonar'
         DOCKER_IMAGE_NAME = 'ahmedbenabdallah-5sae4-g3-ski'
         DOCKER_IMAGE_TAG = "v${BUILD_NUMBER}" // Using Jenkins BUILD_NUMBER as the tag
+        SONAR_PROJECT_KEY = 'tn.esprit.spring:gestion-station-ski'
+        SONAR_AUTH_TOKEN = 'sqb_fcdb9c4beaafd57b61a1f629562b1c67ce914a59'
+        SONAR_URL = 'http://192.168.2.132:9000'
+        NEXUS_URL = 'http://192.168.2.132:8081/#browse/browse'
+        DOCKERHUB_URL = 'https://hub.docker.com/repository/docker/docker23440/ahmedbenabdallah-5sae4-g3-ski'
     }
 
     stages {
@@ -29,6 +34,7 @@ pipeline {
         stage('Run Unit Tests') {
             steps {
                 sh 'mvn test'
+                junit '**/target/surefire-reports/*.xml' // Adjust path as needed
             }
         }
 
@@ -71,32 +77,45 @@ pipeline {
         success {
             echo "Preparing to send email..."
             script {
-                def testResults = currentBuild.result ?: 'SUCCESS' // Default to 'SUCCESS' if result is null
+                // Parse test results
+                def testResults = currentBuild.rawBuild.getAction(hudson.tasks.junit.TestResultAction.class)
+                def totalTests = testResults.totalCount
+                def failedTests = testResults.failCount
+                def passedTests = totalTests - failedTests
+
+                // Fetch coverage from SonarQube
+                def sonarUrl = "${SONAR_URL}/api/measures/component?component=${SONAR_PROJECT_KEY}&metricKeys=coverage"
+                def coverageResponse = sh(script: "curl -u ${SONAR_AUTH_TOKEN}: ${sonarUrl}", returnStdout: true).trim()
+                def coverageJson = readJSON text: coverageResponse
+                def coverage = coverageJson.component.measures.find { it.metric == 'coverage' }?.value ?: 'N/A'
+
+                // Send email with dynamic values
                 emailext body: """
                     <html>
                         <body>
-                            <h2>Build and Test Summary</h2>
+                            <h2>Build and Test Summary ✅✅</h2>
                             <p>Dear Team,</p>
                             <p>The Jenkins build <b>${env.JOB_NAME}</b> has successfully completed with the following details:</p>
                             <h3>Build Details:</h3>
                             <ul>
                                 <li><b>Build Number:</b> ${env.BUILD_NUMBER}</li>
-                                <li><b>Build Status:</b> ${testResults}</li>
+                                <li><b>Build Status:</b> SUCCESS</li>
                                 <li><b>SonarQube Analysis:</b> Completed</li>
                                 <li><b>Docker Image:</b> ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}</li>
                                 <li><b>Deployment:</b> Successfully deployed to Nexus and Dockerhub</li>
                             </ul>
                             <h3>Test Results:</h3>
                             <ul>
-                                <li><b>Unit Tests:</b> Passed</li>
-                                <li><b>Total Tests Run:</b> (Specify total number here)</li>
-                                <li><b>Test Coverage:</b> (Specify coverage percentage here)</li>
+                                <li><b>Total Tests Run:</b> ${totalTests}</li>
+                                <li><b>Tests Passed:</b> ${passedTests}</li>
+                                <li><b>Tests Failed:</b> ${failedTests}</li>
+                                <li><b>Test Coverage:</b> ${coverage}%</li>
                             </ul>
                             <h3>Additional Information:</h3>
                             <ul>
-                                <li><b>SonarQube Link:</b> <a href="http://sonarqube-url">SonarQube Dashboard</a></li>
-                                <li><b>Nexus Repository:</b> <a href="http://nexus-url">Nexus Repository Link</a></li>
-                                <li><b>Docker Image:</b> Available at DockerHub <a href="https://hub.docker.com/repository/docker/docker23440/ahmedbenabdallah-5sae4-g3-ski">here</a></li>
+                                <li><b>SonarQube Link:</b> <a href="${SONAR_URL}/dashboard?id=${SONAR_PROJECT_KEY}">SonarQube Dashboard</a></li>
+                                <li><b>Nexus Repository:</b> <a href="${NEXUS_URL}">Nexus Repository Link</a></li>
+                                <li><b>Docker Image:</b> Available at DockerHub <a href="${DOCKERHUB_URL}">here</a></li>
                             </ul>
                             <p>For more details, please check the Jenkins job at: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
                             <p><i>This is an auto-generated email. Please do not reply.<br/>
@@ -116,7 +135,7 @@ pipeline {
                 emailext body: """
                     <html>
                         <body>
-                            <h2>Build and Test Summary</h2>
+                            <h2>Build and Test Summary ❌❌</h2>
                             <p>Dear Team,</p>
                             <p>The Jenkins build <b>${env.JOB_NAME}</b> has failed with the following details:</p>
                             <h3>Build Details:</h3>
