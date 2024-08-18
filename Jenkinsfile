@@ -75,14 +75,28 @@ pipeline {
                 emailext body: """
                     <html>
                         <body>
-                            <h2>Build and Test Results</h2>
+                            <h2>Build and Test Summary</h2>
+                            <p>Dear Team,</p>
                             <p>The Jenkins build <b>${env.JOB_NAME}</b> has successfully completed with the following details:</p>
+                            <h3>Build Details:</h3>
                             <ul>
                                 <li><b>Build Number:</b> ${env.BUILD_NUMBER}</li>
                                 <li><b>Build Status:</b> ${testResults}</li>
                                 <li><b>SonarQube Analysis:</b> Completed</li>
                                 <li><b>Docker Image:</b> ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}</li>
                                 <li><b>Deployment:</b> Successfully deployed to Nexus and Dockerhub</li>
+                            </ul>
+                            <h3>Test Results:</h3>
+                            <ul>
+                                <li><b>Unit Tests:</b> Passed</li>
+                                <li><b>Total Tests Run:</b> (Specify total number here)</li>
+                                <li><b>Test Coverage:</b> (Specify coverage percentage here)</li>
+                            </ul>
+                            <h3>Additional Information:</h3>
+                            <ul>
+                                <li><b>SonarQube Link:</b> <a href="http://sonarqube-url">SonarQube Dashboard</a></li>
+                                <li><b>Nexus Repository:</b> <a href="http://nexus-url">Nexus Repository Link</a></li>
+                                <li><b>Docker Image:</b> Available at DockerHub <a href="https://hub.docker.com/repository/docker/docker23440/ahmedbenabdallah-5sae4-g3-ski">here</a></li>
                             </ul>
                             <p>For more details, please check the Jenkins job at: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
                             <p><i>This is an auto-generated email. Please do not reply.<br/>
@@ -102,13 +116,25 @@ pipeline {
                 emailext body: """
                     <html>
                         <body>
-                            <h2>Build and Test Results</h2>
+                            <h2>Build and Test Summary</h2>
+                            <p>Dear Team,</p>
                             <p>The Jenkins build <b>${env.JOB_NAME}</b> has failed with the following details:</p>
+                            <h3>Build Details:</h3>
                             <ul>
                                 <li><b>Build Number:</b> ${env.BUILD_NUMBER}</li>
                                 <li><b>Build Status:</b> ${testResults}</li>
                                 <li><b>Failed Stage:</b> ${env.STAGE_NAME}</li>
-                                <li><b>Error Log:</b> Check the Jenkins console output for detailed logs</li>
+                            </ul>
+                            <h3>Error Details:</h3>
+                            <ul>
+                                <li><b>Error Message:</b> Please refer to the Jenkins console output for detailed logs.</li>
+                                <li><b>SonarQube Analysis:</b> Failed or Incomplete</li>
+                            </ul>
+                            <h3>Recommended Actions:</h3>
+                            <ul>
+                                <li>Check the console output for specific error messages.</li>
+                                <li>Review the SonarQube analysis report for potential issues.</li>
+                                <li>Ensure all dependencies are correctly configured.</li>
                             </ul>
                             <p>For more details, please check the Jenkins job at: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
                             <p><i>This is an auto-generated email. Please do not reply.<br/>
