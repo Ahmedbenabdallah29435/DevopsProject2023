@@ -27,14 +27,14 @@ pipeline {
 
         stage('Artifact construction') {
             steps {
-                sh 'mvn install -Dmaven.test.skip=true'
+                sh 'mvn install'
             }
         }
 
         stage('Run Unit Tests') {
             steps {
                 sh 'mvn test'
-                junit '**/target/surefire-reports/*.xml' // Adjust path as needed
+                junit '**/target/surefire-reports/*.xml' // Ensure this matches your test report path
             }
         }
 
@@ -79,15 +79,15 @@ pipeline {
             script {
                 // Parse test results
                 def testResults = currentBuild.rawBuild.getAction(hudson.tasks.junit.TestResultAction.class)
-                def totalTests = testResults.totalCount
-                def failedTests = testResults.failCount
+                def totalTests = testResults?.totalCount ?: 0
+                def failedTests = testResults?.failCount ?: 0
                 def passedTests = totalTests - failedTests
 
                 // Fetch coverage from SonarQube
                 def sonarUrl = "${SONAR_URL}/api/measures/component?component=${SONAR_PROJECT_KEY}&metricKeys=coverage"
                 def coverageResponse = sh(script: "curl -u ${SONAR_AUTH_TOKEN}: ${sonarUrl}", returnStdout: true).trim()
                 def coverageJson = readJSON text: coverageResponse
-                def coverage = coverageJson.component.measures.find { it.metric == 'coverage' }?.value ?: 'N/A'
+                def coverage = coverageJson?.component?.measures?.find { it.metric == 'coverage' }?.value ?: 'N/A'
 
                 // Send email with dynamic values
                 emailext body: """
