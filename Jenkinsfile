@@ -70,14 +70,15 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', 'DOCKERID23513230') {
-                    sh "docker tag $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG docker23440/ahmedbenabdallah-5sae4-g3-ski:$DOCKER_IMAGE_TAG"
-                    sh "docker push docker23440/ahmedbenabdallah-5sae4-g3-ski:$DOCKER_IMAGE_TAG"
+                        sh "docker tag $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG docker23440/ahmedbenabdallah-5sae4-g3-ski:$DOCKER_IMAGE_TAG"
+                        sh "docker push docker23440/ahmedbenabdallah-5sae4-g3-ski:$DOCKER_IMAGE_TAG"
                     }
+                }
             }
+        }
 
         stage('Run Spring and MySQL Containers') {
             steps {
-                sh "docker login -u docker23440 -p Docker23440"
                 sh 'docker compose up -d'
                 echo 'Run Spring && MySQL Containers'
             }
