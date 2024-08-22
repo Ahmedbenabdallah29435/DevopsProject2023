@@ -15,7 +15,17 @@ pipeline {
     stages {
         stage('GIT') {
             steps {
-                checkout scm
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: '*/AhmedBenAbdallah_5SAE4_G3']], // Updated branch name
+                    doGenerateSubmoduleConfigurations: false,
+                    extensions: [],
+                    submoduleCfg: [],
+                    userRemoteConfigs: [[
+                        credentialsId: '27684240', // Your credentials ID
+                        url: 'https://github.com/Ahmedbenabdallah29435/DevopsProject2023' // Your repository URL
+                    ]]
+                ])
             }
         }
 
@@ -77,7 +87,6 @@ pipeline {
         success {
             echo "Build succeeded. Preparing to send email..."
             script {
-                // Sending the email without trying to access non-permitted methods
                 emailext body: """
                     <html>
                         <body>
