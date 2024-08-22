@@ -81,7 +81,7 @@ pipeline {
                 emailext body: """
                     <html>
                         <body>
-                            <h2>Build and Test Summary</h2>
+                            <h2>Build and Test Summary ✅✅</h2>
                             <p>Dear Team,</p>
                             <p>The Jenkins build <b>${env.JOB_NAME}</b> has successfully completed with the following details:</p>
                             <h3>Build Details:</h3>
@@ -115,7 +115,7 @@ pipeline {
                 emailext body: """
                     <html>
                         <body>
-                            <h2>Build and Test Summary</h2>
+                            <h2>Build and Test Summary ❌❌</h2>
                             <p>Dear Team,</p>
                             <p>The Jenkins build <b>${env.JOB_NAME}</b> has failed.</p>
                             <h3>Build Details:</h3>
