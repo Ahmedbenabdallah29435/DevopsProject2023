@@ -31,38 +31,50 @@ pipeline {
 
         stage('Cleaning the project') {
             steps {
-                sh 'mvn clean compile'
+                dir('backend') { // Change directory to backend
+                    sh 'mvn clean compile'
+                }
             }
         }
 
         stage('Artifact construction') {
             steps {
-                sh 'mvn install'
+                dir('backend') { // Change directory to backend
+                    sh 'mvn install'
+                }
             }
         }
 
         stage('Run Unit Tests') {
             steps {
-                sh 'mvn test'
-                junit '**/target/surefire-reports/*.xml' // Ensure this matches your test report path
+                dir('backend') { // Change directory to backend
+                    sh 'mvn test'
+                    junit '**/target/surefire-reports/*.xml' // Ensure this matches your test report path
+                }
             }
         }
 
         stage('SonarQube Analysis') {
             steps {
-                sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=${SONAR_MDP}'
+                dir('backend') { // Change directory to backend
+                    sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=${SONAR_MDP}'
+                }
             }
         }
 
         stage('Deploy to Nexus') {
             steps {
-                sh 'mvn deploy -DskipTests=true'
+                dir('backend') { // Change directory to backend
+                    sh 'mvn deploy -DskipTests=true'
+                }
             }
         }
 
         stage('Building Docker Image') {
             steps {
-                sh 'docker build -t $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG -f Dockerfile ./'
+                dir('backend') { // Change directory to backend
+                    sh 'docker build -t $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG -f Dockerfile ./'
+                }
             }
         }
 
