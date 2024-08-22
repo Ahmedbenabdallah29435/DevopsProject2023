@@ -3,7 +3,9 @@ services:
   gestion-station-ski:
     depends_on:
       - mysqldb
-    image: docker23440/ahmedbenabdallah-5sae4-g3-ski:v46
+    build:
+      context: ./backend                # Point to the backend directory
+    image: docker23440/ahmedbenabdallah-5sae4-g3-ski:v${BUILD_NUMBER}
     restart: on-failure
     environment:
       SPRING_APPLICATION_JSON: '{
